@@ -3,10 +3,7 @@
 namespace App\Observers;
 
 use Artisan;
-use Notification;
 use App\Models\Post;
-use App\Models\Subscriber;
-use App\Notifications\NewPostPublishedNotification;
 
 class PostObserver
 {
