@@ -26,3 +26,29 @@ To list available endpoints:
 ```
     ./vendor/bin/sail artisan r:l --path=websites
 ```
+
+To subscribe to a website the payload should contain:
+
+```
+{
+    email: string;
+}
+```
+
+To create a post for a website the payload should contain:
+
+```
+{
+    title: string;
+    op_email: string;
+    description: string;
+}
+```
+
+After creating a post to get the email notification on terminal run:
+
+```
+./vendor/bin/sail queue:work
+```
+
+Then visit http://localhost:8025 to see the email.

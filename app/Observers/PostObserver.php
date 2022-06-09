@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use Artisan;
 use Notification;
 use App\Models\Post;
 use App\Models\Subscriber;
@@ -17,16 +18,9 @@ class PostObserver
      */
     public function created(Post $post)
     {
-        $emails = $post
-            ->website
-            ->subscribers
-            ->filter(fn (Subscriber $eachSubscriber) => $eachSubscriber->email !== $post->op_email)
-            ->map(fn (Subscriber $eachSubscriber) => $eachSubscriber->email);
-
-        $emails->each(function ($email) use ($post) {
-            Notification::route("mail", $email)
-                ->notify(new NewPostPublishedNotification($post));
-        });
+        Artisan::call('mail:new-post-notification', [
+            'post' => $post->getKey(),
+        ]);
     }
 
     /**
