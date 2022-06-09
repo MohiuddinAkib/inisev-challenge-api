@@ -32,13 +32,8 @@ class PostController extends Controller
 
         $subscriber = Subscriber::whereEmail($data["op_email"])->first();
 
-        $response = Gate::inspect("create-post", [$subscriber, $website]);
+        Gate::authorize("create-post", [$subscriber, $website]);
 
-        if (!$response->allowed()) {
-            return response()->json([
-                "message" => $response->message()
-            ], Response::HTTP_FORBIDDEN);
-        }
         try {
             $website->posts()->create($data);
 
