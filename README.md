@@ -52,3 +52,9 @@ After creating a post to get the email notification on terminal run:
 ```
 
 Then visit http://localhost:8025 to see the email.
+
+To run the feature tests:
+
+```
+./vendor/bin/sail test
+```
