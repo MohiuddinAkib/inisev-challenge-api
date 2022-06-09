@@ -27,7 +27,7 @@ class StorePostRequest extends FormRequest
         return [
             "title" => ["required", "string"],
             "description" => ["required", "string"],
-            "op_email" => ["email", "exists:App\Models\Subscriber,email"]
+            "op_email" => ["email", "exists:App\Models\Subscriber,email", "required"]
         ];
     }
 
@@ -40,7 +40,6 @@ class StorePostRequest extends FormRequest
     {
         return [
             "op_email.exists" => FeedbackMessage::POST_OP_EMAIL_IS_NOT_SUBSCRIBED
-
         ];
     }
 }

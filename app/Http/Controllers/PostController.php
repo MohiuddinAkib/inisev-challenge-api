@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Website;
 use App\Models\Subscriber;
-use Illuminate\Http\Request;
 use App\Constants\FeedbackMessage;
-use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\StorePostRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends Controller
@@ -17,22 +16,13 @@ class PostController extends Controller
      * @param  \App\Http\Requests\StorePostRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Website $website)
+    public function store(StorePostRequest $request, Website $website)
     {
-        $data = $request->validate(
-            [
-                "title" => ["required", "string"],
-                "description" => ["required", "string"],
-                "op_email" => ["email", "exists:App\Models\Subscriber,email", "required"]
-            ],
-            [
-                "op_email.exists" => FeedbackMessage::POST_OP_EMAIL_IS_NOT_SUBSCRIBED
-            ]
-        );
+        $data = $request->validated();
 
         $subscriber = Subscriber::whereEmail($data["op_email"])->first();
 
-        Gate::authorize("create-post", [$subscriber, $website]);
+        $this->authorize("create-post", [$subscriber, $website]);
 
         try {
             $website->posts()->create($data);
@@ -44,7 +34,7 @@ class PostController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 "status" => Response::HTTP_INTERNAL_SERVER_ERROR,
-                "message" => $th->getMessage()
+                "message" => app()->environment("local") ? $th->getMessage() : Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR]
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

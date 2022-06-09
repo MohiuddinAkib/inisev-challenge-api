@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Website;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class WebsiteSeeder extends Seeder
 {
@@ -14,6 +15,6 @@ class WebsiteSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Website::factory()->count(50)->create();
     }
 }

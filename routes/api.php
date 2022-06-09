@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\WebsiteController;
 use App\Http\Controllers\SubscriptionController;
 
 /*
@@ -20,5 +21,6 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post("/websites/{website}/subscribe", [SubscriptionController::class, "store"])->name("subscriptions.store");
+Route::apiResource("/websites", WebsiteController::class)->only("index");
 Route::post("/websites/{website}/posts", [PostController::class, "store"])->name("posts.store");
+Route::post("/websites/{website}/subscribe", [SubscriptionController::class, "store"])->name("subscriptions.store");
