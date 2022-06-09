@@ -20,3 +20,9 @@ To run seeder:
 ```
     ./vendor/bin/sail artisan db:seed --class WebsiteSeeder
 ```
+
+To list available endpoints:
+
+```
+    ./vendor/bin/sail artisan r:l --path=websites
+```
